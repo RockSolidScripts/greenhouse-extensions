@@ -66,6 +66,8 @@ Configure the required options:
 | `netappsd.cleanup.image.repository` | kubectl image repository for the pre-delete cleanup hook | No |
 | `netappsd.cleanup.image.tag` | kubectl image tag for the pre-delete cleanup hook | No |
 | `apps` | Map of app labels to enable discovery (for example cinder/manila/apod/cinder-manila) | No |
+| `additionalLabels` | Extra labels merged onto every resource the chart renders (for example `ccloud/service`, `ccloud/support-group`) | No |
+| `extraManifests` | List of additional Kubernetes manifests to render alongside the chart (for example owner-info metadata) | No |
 
 ## Configuration
 
@@ -117,6 +119,20 @@ apps:
   cinder-manila:
     enabled: true
 ```
+
+### Additional Labels
+
+`additionalLabels` is merged into the common label set applied to every resource the chart renders — including the master Deployments, Services, ConfigMaps, the cleanup hook, and the runtime worker Deployment template (so master-created worker Deployments and their pods inherit them too):
+
+```yaml
+additionalLabels:
+  ccloud/service: netapp-monitoring
+  ccloud/support-group: storage
+```
+
+### Extra Manifests
+
+`extraManifests` renders arbitrary Kubernetes objects alongside the chart. Each list entry is a full manifest and is passed through Helm templating, so entries may reference chart values.
 
 ### Example Plugin Resource
 
