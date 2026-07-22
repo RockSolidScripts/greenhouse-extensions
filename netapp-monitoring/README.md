@@ -122,7 +122,12 @@ apps:
 
 ### Additional Labels
 
-`additionalLabels` is merged into the common label set applied to every resource the chart renders — including the master Deployments, Services, ConfigMaps, the cleanup hook, and the runtime worker Deployment template (so master-created worker Deployments and their pods inherit them too):
+`additionalLabels` are applied in two places:
+
+- On the `metadata.labels` of every resource the chart renders (master Deployments, Services, ConfigMaps, the cleanup hook, and the runtime worker Deployment template), via the common label set.
+- On the **pod template** labels of the master and worker Deployments, so the running master and master-created worker pods carry them too.
+
+Values are quoted when rendered, so non-string scalars are emitted as valid label strings. Note that YAML parses unquoted numbers/bools before templating (e.g. `1.0` becomes `1`); quote such values in your config to preserve them exactly.
 
 ```yaml
 additionalLabels:

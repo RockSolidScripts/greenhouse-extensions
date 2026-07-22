@@ -85,6 +85,6 @@ spec:
       required: false
       type: map
     - name: extraManifests
-      description: "List of additional Kubernetes manifests to render alongside the chart."
+      description: "List of additional Kubernetes manifests to render alongside the chart. Each list item must be a YAML object/map (a full manifest), not a raw YAML string; entries are passed through Helm templating so they may reference chart values."
       required: false
       type: list
