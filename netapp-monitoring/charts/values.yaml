@@ -54,6 +54,12 @@ netappsd:
     repository:
     tag:
     pullPolicy: IfNotPresent
+  # Image for the pre-delete cleanup hook (kubectl) that removes the per-filer
+  # worker Deployments the master created at runtime.
+  cleanup:
+    image:
+      repository:
+      tag:
   region: ""
   ports:
     master: 8000
