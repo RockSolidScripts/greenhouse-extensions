@@ -4,8 +4,8 @@
 ---
 harvest:
   image:
-    repository: keppel.eu-de-1.cloud.sap/ccloud/harvest
-    tag: 25.11.0-20251126205434
+    repository:
+    tag:
     pullPolicy: IfNotPresent
   resources:
     requests:
@@ -51,14 +51,16 @@ netappsd:
   serviceAccountName: netappsd
   lob: CCloud
   image:
-    repository: keppel.eu-de-1.cloud.sap/ccloud/netappsd
-    tag: dme-strg-ganesh-test-6
-    pullPolicy: Always
+    repository:
+    tag:
+    pullPolicy: IfNotPresent
   # Image for the pre-delete cleanup hook (kubectl) that removes the per-filer
   # worker Deployments the master created at runtime.
   cleanup:
-    image: keppel.eu-de-1.cloud.sap/ccloud-registry-k8s-io-mirror/kubectl:v1.36.1
-  region: "qa-de-1"
+    image:
+      repository:
+      tag:
+  region: ""
   ports:
     master: 8000
     harvest: 13000
@@ -70,12 +72,12 @@ netappsd:
     limits:
       cpu: 200m
       memory: 256Mi
-  netapp_exporter_user: vault+kvv2:///secrets/shared/harvest/harvest-ad/local-user/username
-  netapp_exporter_password: vault+kvv2:///secrets/shared/harvest/harvest-ad/local-user/password
-  netbox_api_token: vault+kvv2:///secrets/shared/harvest/netapp/token
-  netbox_host: vault+kvv2:///secrets/shared/harvest/netapp/host
-  credentials_file: /app/secrets/local-basic-auth.yml
-  credentials_secret: local-basic-auth
+  netapp_exporter_user: ""
+  netapp_exporter_password: ""
+  netbox_api_token: ""
+  netbox_host: ""
+  credentials_file:
+  credentials_secret:
 
 # apps: Configures which filers are discovered by the service discovery.
 # Each key corresponds to a label assigned to devices in Netbox.

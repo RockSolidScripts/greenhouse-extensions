@@ -29,7 +29,7 @@ The master reconciles worker Deployments as filers come and go:
 
 Worker Deployments the master creates are labeled `app.kubernetes.io/managed-by=netappsd` and carry a `netappsd/filer=<name>` label identifying their filer. These Deployments are **not** tracked by Helm — they are created at runtime — which has two consequences the chart handles explicitly:
 
-- **Uninstall cleanup.** A `pre-delete` hook Job ([harvest-netappsd-cleanup-hook.yaml](charts/templates/harvest-netappsd-cleanup-hook.yaml)) deletes all `managed-by=netappsd` Deployments before the release is removed, so the master-created workers are not orphaned on `helm uninstall`. The hook image is configured via `netappsd.cleanup.image`.
+- **Uninstall cleanup.** A `pre-delete` hook Job ([harvest-netappsd-cleanup-hook.yaml](charts/templates/harvest-netappsd-cleanup-hook.yaml)) deletes all `managed-by=netappsd` Deployments before the release is removed, so the master-created workers are not orphaned on `helm uninstall`. The hook image is configured via `netappsd.cleanup.image.repository` and `netappsd.cleanup.image.tag`.
 - **Template changes do not auto-propagate.** Because reconciliation is create-if-missing, editing the worker template ([files/deployment.yaml.tpl](charts/files/deployment.yaml.tpl)) does **not** update already-running worker Deployments — the master only applies the new template to workers it creates afterward (as filers churn). To roll existing workers onto a new template, delete the managed worker Deployments (`kubectl delete deploy -l app.kubernetes.io/managed-by=netappsd -n <namespace>`); the master recreates them from the current template within its next reconcile (~5 min).
 
 ## Quick Start
@@ -63,7 +63,8 @@ Configure the required options:
 | `netappsd.netapp_exporter_password` | NetApp exporter password | Yes |
 | `netappsd.netbox_api_token` | Netbox API token | Yes |
 | `netappsd.netbox_host` | Netbox host URL | Yes |
-| `netappsd.cleanup.image` | kubectl image used by the pre-delete cleanup hook | No |
+| `netappsd.cleanup.image.repository` | kubectl image repository for the pre-delete cleanup hook | No |
+| `netappsd.cleanup.image.tag` | kubectl image tag for the pre-delete cleanup hook | No |
 | `apps` | Map of app labels to enable discovery (for example cinder/manila/apod/cinder-manila) | No |
 
 ## Configuration

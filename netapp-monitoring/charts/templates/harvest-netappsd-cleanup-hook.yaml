@@ -26,7 +26,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: cleanup
-          image: {{ .Values.netappsd.cleanup.image }}
+          image: "{{ required ".Values.netappsd.cleanup.image.repository is required" .Values.netappsd.cleanup.image.repository }}:{{ required ".Values.netappsd.cleanup.image.tag is required" .Values.netappsd.cleanup.image.tag }}"
           command:
             - kubectl
             - delete
