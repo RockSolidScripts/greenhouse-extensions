@@ -103,3 +103,7 @@ when config or secret templates change.
 {{ include (print $.Template.BasePath "/harvest-basic-auth.yaml") . | sha256sum }}
 {{- end }}
 
+{{- define "netapp-monitoring.checksum.deploymentTemplate" -}}
+{{ include (print $.Template.BasePath "/harvest-netappsd-deployment-template-configmap.yaml") . | sha256sum }}
+{{- end }}
+
