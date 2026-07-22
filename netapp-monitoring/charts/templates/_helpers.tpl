@@ -103,7 +103,12 @@ when config or secret templates change.
 {{ include (print $.Template.BasePath "/harvest-basic-auth.yaml") . | sha256sum }}
 {{- end }}
 
+{{/*
+Per-app checksum of the rendered worker deployment template. Scoped per app so
+only the affected master rolls when its own deployment-template ConfigMap
+changes. Call with (dict "root" . "appName" $appName).
+*/}}
 {{- define "netapp-monitoring.checksum.deploymentTemplate" -}}
-{{ include (print $.Template.BasePath "/harvest-netappsd-deployment-template-configmap.yaml") . | sha256sum }}
+{{ tpl (.root.Files.Get "files/deployment.yaml.tpl") (merge (dict "appName" .appName) .root) | sha256sum }}
 {{- end }}
 

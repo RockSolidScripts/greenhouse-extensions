@@ -24,7 +24,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/targets: storage
         checksum/sd-secret: {{ include "netapp-monitoring.checksum.sdSecret" . }}
-        checksum/deployment-template: {{ include "netapp-monitoring.checksum.deploymentTemplate" . }}
+        checksum/deployment-template: {{ include "netapp-monitoring.checksum.deploymentTemplate" (dict "root" . "appName" $appName) }}
       labels:
         app: {{ include "netapp-monitoring.fullname" . }}-{{ $appName }}
         name: {{ include "netapp-monitoring.fullname" . }}-{{ $appName }}-master
